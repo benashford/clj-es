@@ -5,15 +5,15 @@
   (typical-call
    (fn
      ([es index-name type doc]
+      (index es index-name type nil nil doc))
+     ([es index-name type params-or-id doc]
+      (if (map? params-or-id)
+        (index es index-name type nil params-or-id doc)
+        (index es index-name type params-or-id nil doc)))
+     ([es index-name type id params doc]
       (call-es es
-               :post (make-url index-name type)
-               :json-body doc))
-     ([es index-name type id doc]
-      (call-es es
-               :put (make-url index-name type id)
-               :json-body doc))
-     ([es index-name type id create doc]
-      (call-es es
-               :put (make-url index-name type id (when create "_create"))
+               (if id :put :post)
+               (make-url index-name type id)
+               :params params
                :json-body doc)))
    good-status))
