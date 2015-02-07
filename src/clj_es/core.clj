@@ -13,7 +13,7 @@
                     host
                     port
                     (s/join "/" url-parts))]
-    (if params
+    (if-not (empty? params)
       (format "%s?%s"
               url
               (s/join "&"
@@ -40,6 +40,10 @@
   (and (>= status 200)
        (<  status 300)))
 
+(defn good-or-not-found-status [status]
+  (or (good-status status)
+      (= status 404)))
+
 (defn error-status [status]
   (and (>= status 500)
        (<  status 600)))
@@ -53,15 +57,24 @@
 (defn- make-body [{:keys [json-body body]}]
   (if body
     body
-    (json/encode json-body)))
+    (if json-body
+      (json/encode json-body))))
+
+(def ^:dynamic params {})
+
+(defmacro with-params [params & body]
+  `(binding [params (merge params ~params)]
+     ~@body))
 
 (defn call-es [es method url-parts & {:as opts}]
   (let [es           (merge default-es es)
-        url          (es-url es url-parts (:params opts))
+        url          (es-url es url-parts (merge params (:params opts)))
         http-options (make-http-options method url (make-body opts))
         c            (a/chan)]
+    (println "CALLING:" (pr-str http-options))
     (http/request http-options
                   (fn [response]
+                    (println "RESPONSE:" (pr-str response))
                     (as-> response x
                           (dissoc x :headers :opts)
                           (check-for-errors x)
@@ -70,6 +83,7 @@
 
 (defn parse-json [c]
   (a/map (fn [{:keys [error body] :as response}]
+           (println "PARSE JSON:" (pr-str response))
            (if error
              response
              (assoc response :body (json/decode body true))))
