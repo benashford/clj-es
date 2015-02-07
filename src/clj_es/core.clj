@@ -36,7 +36,11 @@
       (assoc options :body body)
       options)))
 
-(defn- error-status [status]
+(defn good-status [status]
+  (and (>= status 200)
+       (<  status 300)))
+
+(defn error-status [status]
   (and (>= status 500)
        (<  status 600)))
 
@@ -46,10 +50,15 @@
    (error-status status) (assoc response :error body)
    :else                 response))
 
+(defn- make-body [{:keys [json-body body]}]
+  (if body
+    body
+    (json/encode json-body)))
+
 (defn call-es [es method url-parts & {:as opts}]
   (let [es           (merge default-es es)
         url          (es-url es url-parts (:params opts))
-        http-options (make-http-options method url (:body opts))
+        http-options (make-http-options method url (make-body opts))
         c            (a/chan)]
     (http/request http-options
                   (fn [response]
@@ -65,3 +74,32 @@
              response
              (assoc response :body (json/decode body true))))
          [c]))
+
+(defn- check-status [c status-f]
+  (a/map (fn [{:keys [status] :as response}]
+           (if (status-f status)
+             response
+             (assoc response :error (str "Unexpected response:" status))))
+         [c]))
+
+(defn typical-call [f status-f]
+  "The typical happy path that 90% of calls make"
+  (fn [& args]
+    (-> f
+        (apply args)
+        parse-json
+        (check-status status-f))))
+
+(defn make-url [& parts]
+  (remove nil? parts))
+
+(defn unwrap [response]
+  (if-let [msg (:error response)]
+    (throw (ex-info msg response))
+    response))
+
+(defmacro unwrap! [c]
+  `(unwrap (a/<! ~c)))
+
+(defmacro unwrap!! [c]
+  `(unwrap (a/<!! ~c)))
