@@ -83,7 +83,6 @@
 
 (defn parse-json [c]
   (a/map (fn [{:keys [error body] :as response}]
-           (println "PARSE JSON:" (pr-str response))
            (if error
              response
              (assoc response :body (json/decode body true))))
