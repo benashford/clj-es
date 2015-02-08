@@ -4,6 +4,8 @@
             [cheshire.core :as json]
             [clj-es.core :refer :all]))
 
+;; Document APIs
+
 (def index
   (typical-call
    (fn index*
@@ -90,3 +92,26 @@
                  :params params))))
    good-status))
 
+(def termvectors
+  (typical-call
+   (fn term-vectors*
+     ([es index-name type body]
+      (term-vectors* es index-name type nil body))
+     ([es index-name type id body]
+      (call-es es
+               :get (make-url index-name type id "_termvector")
+               :json-body body)))
+   good-status))
+
+(def multi-termvectors
+  (typical-call
+   (fn multi-termvectors*
+     ([es body]
+      (multi-termvectors* es nil nil body))
+     ([es index-name body]
+      (multi-termvectors* es index-name nil body))
+     ([es index-name type body]
+      (call-es es
+               :get (make-url index-name type "_mtermvectors")
+               :json-body body)))
+   good-status))
