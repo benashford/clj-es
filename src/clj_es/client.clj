@@ -15,7 +15,7 @@
       (call-es es
                (if id :put :post)
                (make-url index-name type id)
-               :json-body doc)))
+               :body doc)))
    good-status))
 
 (def get
@@ -38,7 +38,7 @@
    (fn [es index-name type id body]
      (call-es es
               :post (make-url index-name type id "_update")
-              :json-body body))
+              :body body))
    good-or-not-found-status))
 
 (def multi-get
@@ -51,7 +51,7 @@
      ([es index-name type body]
       (call-es es
                :get (make-url index-name type "_mget")
-               :json-body body)))
+               :body body)))
    good-status))
 
 (def bulk
@@ -88,7 +88,7 @@
             query      (when-not (string? query) query)]
         (call-es es
                  :delete (make-url index-term type-term "_query")
-                 :json-body query
+                 :body query
                  :params params))))
    good-status))
 
@@ -100,7 +100,7 @@
      ([es index-name type id body]
       (call-es es
                :get (make-url index-name type id "_termvector")
-               :json-body body)))
+               :body body)))
    good-status))
 
 (def multi-termvectors
@@ -113,5 +113,9 @@
      ([es index-name type body]
       (call-es es
                :get (make-url index-name type "_mtermvectors")
-               :json-body body)))
+               :body body)))
    good-status))
+
+;; Search APIs
+
+
