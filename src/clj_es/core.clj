@@ -147,6 +147,21 @@
 (defn make-url [& parts]
   (remove nil? parts))
 
+(defn multi
+  "For multi-index, or multi-type requests"
+  [bits]
+  (when bits
+    (if (string? bits)
+      bits
+      (s/join "," bits))))
+
+(defn search-uri-or-body [query]
+  (let [query-string? (string? query)]
+    [(when query-string?
+       {:q query})
+     (when-not query-string?
+       query)]))
+
 ;; Unwrapping response
 
 (defn unwrap [response]

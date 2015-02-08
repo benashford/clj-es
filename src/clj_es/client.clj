@@ -76,18 +76,12 @@
      ([es index-name query]
       (delete-by-query* es index-name nil query))
      ([es index-name type query]
-      (let [index-term (if (string? index-name)
-                         index-name
-                         (s/join "," index-name))
-            type-term  (when type
-                         (if (string? type)
-                           type
-                           (s/join "," type)))
-            params     (when (string? query)
-                         {:q query})
-            query      (when-not (string? query) query)]
+      (let [[params
+             query] (search-uri-or-body query)]
         (call-es es
-                 :delete (make-url index-term type-term "_query")
+                 :delete (make-url (multi index-name)
+                                   (multi type)
+                                   "_query")
                  :body query
                  :params params))))
    good-status))
@@ -118,4 +112,20 @@
 
 ;; Search APIs
 
-
+(def search
+  (typical-call
+   (fn search*
+     ([es query]
+      (search* es nil nil query))
+     ([es index-name query]
+      (search* es index-name nil query))
+     ([es index-name type query]
+      (let [[params
+             query] (search-uri-or-body query)]
+        (call-es es
+                 :get (make-url (multi index-name)
+                                (multi type)
+                                "_search")
+                 :body query
+                 :params params))))
+   good-status))
