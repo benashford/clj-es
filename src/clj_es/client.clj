@@ -137,3 +137,31 @@
               :delete (make-url "_search" "scroll" (when (empty? scroll-ids) "_all"))
               :body (when-not (empty? scroll-ids) (multi scroll-ids))))
    good-status))
+
+(def template-search
+  "Call a templated search"
+  (typical-call
+   (fn [es body]
+     (call-es es
+              :get (make-url "_search" "template")
+              :body body))
+   good-status))
+
+(def search-template
+  "Get and set templates"
+  (typical-call
+   (fn
+     ([es template-name]
+      (call-es es
+               :get (make-url "_search" "template" template-name)))
+     ([es template-name body]
+      (call-es es
+               :post (make-url "_search" "template" template-name)
+               :body body)))
+   good-or-not-found-status))
+
+(def search-shards
+  (typical-call
+   (fn [es index-name]
+     (call-es es :get (make-url index-name "_search_shards")))
+   good-status))
