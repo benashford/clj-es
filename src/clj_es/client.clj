@@ -129,3 +129,11 @@
                  :body query
                  :params params))))
    good-status))
+
+(def clear-scroll
+  (typical-call
+   (fn [es & scroll-ids]
+     (call-es es
+              :delete (make-url "_search" "scroll" (when (empty? scroll-ids) "_all"))
+              :body (when-not (empty? scroll-ids) (multi scroll-ids))))
+   good-status))
