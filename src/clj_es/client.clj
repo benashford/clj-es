@@ -165,3 +165,97 @@
    (fn [es index-name]
      (call-es es :get (make-url index-name "_search_shards")))
    good-status))
+
+(def suggest
+  (typical-call
+   (fn suggest*
+     ([es body]
+      (suggest* es nil body))
+     ([es index-name body]
+      (call-es es :post (make-url index-name "_suggest") :body body)))
+   good-status))
+
+(def multi-search
+  (typical-call
+   (fn multi-search*
+     ([es ops]
+      (multi-search* nil nil ops))
+     ([es index-name ops]
+      (multi-search* index-name nil ops))
+     ([es index-name type ops]
+      (call-es es
+               :get (make-url index-name type "_msearch")
+               :body (s/join ""
+                             (map #(str (json/encode %) "\n") (flatten ops))))))
+   good-status))
+
+(def count
+  (typical-call
+   (fn count*
+     ([es query]
+      (count* es nil nil query))
+     ([es index-name query]
+      (count* es index-name nil query))
+     ([es index-name type query]
+      (let [[params
+             query] (search-uri-or-body query)]
+        (call-es es
+                 :get (make-url (multi index-name)
+                                (multi type)
+                                "_count")
+                 :body query
+                 :params params))))
+   good-status))
+
+(def search-exists
+  (typical-call
+   (fn search-exists*
+     ([es query]
+      (search-exists* es nil nil query))
+     ([es index-name query]
+      (search-exists* es index-name nil query))
+     ([es index-name type query]
+      (let [[params
+             query] (search-uri-or-body query)]
+        (call-es es
+                 :get (make-url (multi index-name)
+                                (multi type)
+                                "_search"
+                                "exists")
+                 :body query
+                 :params params))))
+   good-status))
+
+(def validate
+  (typical-call
+   (fn validate*
+     ([es query]
+      (validate* es nil nil query))
+     ([es index-name query]
+      (validate* es index-name nil query))
+     ([es index-name type query]
+      (let [[params
+             query] (search-uri-or-body query)]
+        (call-es es
+                 :get (make-url (multi index-name)
+                                (multi type)
+                                "_validate"
+                                "query")
+                 :body query
+                 :params params))))
+   good-status))
+
+(def explain
+  (typical-call
+   (fn explain*
+     ([es index-name type id query]
+      (let [[params
+             query] (search-uri-or-body query)]
+        (call-es es
+                 :get (make-url index-name
+                                type
+                                id
+                                "_explain")
+                 :body query
+                 :params params))))
+   good-status))
