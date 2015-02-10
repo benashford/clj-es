@@ -259,3 +259,37 @@
                  :body query
                  :params params))))
    good-status))
+
+;; Percolation
+
+(def percolate
+  (typical-call
+   (fn [es index-name type document-or-id]
+     (let [document (when (map? document-or-id) document-or-id)
+           id       (when-not (map? document-or-id) document-or-id)]
+       (call-es es
+                :get (make-url index-name type id "_percolate")
+                :body document)))
+   good-status))
+
+(def percolate-count
+  (typical-call
+   (fn [es index-name type document]
+     (call-es es
+              :get (make-url index-name type "_percolate" "count")
+              :body document))
+   good-status))
+
+(def multi-percolate
+  (typical-call
+   (fn multi-percolate*
+     ([es ops]
+      (multi-percolate* es nil nil ops))
+     ([es index-name ops]
+      (multi-percolate* es index-name nil ops))
+     ([es index-name type ops]
+      (call-es es
+               :get (make-url index-name type "_mpercolate")
+               :body (s/join ""
+                             (map #(str (json/encode %) "\n") (flatten ops))))))
+   good-status))
