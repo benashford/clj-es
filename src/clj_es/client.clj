@@ -1,5 +1,5 @@
 (ns clj-es.client
-  (:refer-clojure :exclude [get])
+  (:refer-clojure :exclude [get count])
   (:require [clojure.string :as s]
             [cheshire.core :as json]
             [clj-es.core :refer :all]))
@@ -292,4 +292,15 @@
                :get (make-url index-name type "_mpercolate")
                :body (s/join ""
                              (map #(str (json/encode %) "\n") (flatten ops))))))
+   good-status))
+
+(def more-like-this
+  (typical-call
+   (fn [es index-name type id & [fields params]]
+     (call-es es
+              :get (make-url index-name type id "_mlt")
+              :params (merge {}
+                             params
+                             (when fields
+                               {:mlt_fields (multi fields)}))))
    good-status))
