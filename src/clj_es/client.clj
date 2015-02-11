@@ -304,3 +304,31 @@
                              (when fields
                                {:mlt_fields (multi fields)}))))
    good-status))
+
+;; Index APIs
+
+(def create-index
+  (typical-call
+   (fn [es index-name & [body]]
+     (call-es es
+              :put (make-url index-name)
+              :body body))
+   good-status))
+
+(def delete-index
+  (typical-call
+   (fn delete-index*
+     ([es]
+      (delete-index* es "_all"))
+     ([es index-name]
+      (call-es es :delete (make-url (multi index-name)))))
+   good-status))
+
+(def get-index
+  (typical-call
+   (fn get-index*
+     ([es]
+      (get-index* es "_all"))
+     ([es index-name & [features]]
+      (call-es es :get (make-url (multi index-name) (multi features)))))
+   good-or-not-found-status))
