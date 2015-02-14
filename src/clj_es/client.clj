@@ -453,3 +453,19 @@
                                  "_alias"
                                  (multi alias-name)))))
    good-status))
+
+(def update-settings
+  (typical-call
+   (fn [es index-name settings]
+     (call-es es :put (make-url index-name "_settings")
+              :body settings))
+   good-status))
+
+(def get-settings
+  (typical-call
+   (fn get-settings*
+     ([es]
+      (get-settings* es "_all"))
+     ([es index-name]
+      (call-es es :get (make-url (multi index-name)))))
+   good-status))
