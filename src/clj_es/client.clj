@@ -332,3 +332,27 @@
      ([es index-name & [features]]
       (call-es es :get (make-url (multi index-name) (multi features)))))
    good-or-not-found-status))
+
+(def index-exists
+  (typical-call
+   (fn [es index-name]
+     (call-es es :head (make-url index-name)))
+   good-or-not-found-status))
+
+(def open-index
+  (typical-call
+   (fn open-index*
+     ([es]
+      (open-index es "_all"))
+     ([es index-name]
+      (call-es es :post (make-url (multi index-name) "_open"))))
+   good-status))
+
+(def close-index
+  (typical-call
+   (fn close-index*
+     ([es]
+      (close-index es "_all"))
+     ([es index-name]
+      (call-es es :post (make-url (multi index-name) "_close"))))
+   good-status))
