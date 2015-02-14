@@ -343,7 +343,7 @@
   (typical-call
    (fn open-index*
      ([es]
-      (open-index es "_all"))
+      (open-index* es "_all"))
      ([es index-name]
       (call-es es :post (make-url (multi index-name) "_open"))))
    good-status))
@@ -352,7 +352,57 @@
   (typical-call
    (fn close-index*
      ([es]
-      (close-index es "_all"))
+      (close-index* es "_all"))
      ([es index-name]
       (call-es es :post (make-url (multi index-name) "_close"))))
+   good-status))
+
+(def put-mapping
+  (typical-call
+   (fn put-mapping*
+     ([es type mapping]
+      (put-mapping* es "_all" type mapping))
+     ([es index-name type mapping]
+      (call-es es :put (make-url (multi index-name)
+                                 "_mapping"
+                                 type)
+               :body mapping)))
+   good-status))
+
+(def get-mapping
+  (typical-call
+   (fn get-mapping*
+     ([es]
+      (get-mapping* es "_all" nil nil))
+     ([es index-name]
+      (get-mapping* es index-name nil nil))
+     ([es index-name type]
+      (get-mapping* es index-name type nil))
+     ([es index-name type field]
+      (call-es es :get (make-url (multi index-name)
+                                 "_mapping"
+                                 (multi type)
+                                 (when field
+                                   "field")
+                                 (multi field)))))
+   good-status))
+
+(def type-exists
+  (typical-call
+   (fn [es index-name type]
+     (call-es es :head (make-url (multi index-name)
+                                 (multi type))))
+   good-or-not-found-status))
+
+(def delete-mapping
+  (typical-call
+   (fn delete-mapping*
+     ([es]
+      (delete-mapping* es "_all" "_all"))
+     ([es index-name]
+      (delete-mapping* es index-name "_all"))
+     ([es index-name type]
+      (call-es es :delete (make-url (multi index-name)
+                                    "_mapping"
+                                    (multi type)))))
    good-status))
