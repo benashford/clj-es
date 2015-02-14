@@ -406,3 +406,50 @@
                                     "_mapping"
                                     (multi type)))))
    good-status))
+
+;; Aliases
+
+(def aliases
+  "End-point for atomically applying multiple alias operations"
+  (typical-call
+   (fn [es body]
+     (call-es es :post (make-url "_aliases")
+              :body body))
+   good-status))
+
+(def add-alias
+  (typical-call
+   (fn add-alias*
+     ([es alias-name]
+      (add-alias* es "_all" alias-name))
+     ([es index-name alias-name]
+      (call-es es :put (make-url (multi index-name)
+                                 "_alias"
+                                 alias-name))))
+   good-status))
+
+(def delete-alias
+  (typical-call
+   (fn delete-alias*
+     ([es]
+      (delete-alias* es "_all" "_all"))
+     ([es index-name]
+      (delete-alias* es index-name "_all"))
+     ([es index-name alias-name]
+      (call-es es :delete (make-url (multi index-name)
+                                    "_alias"
+                                    (multi alias-name)))))
+   good-status))
+
+(def get-alias
+  (typical-call
+   (fn get-alias*
+     ([es]
+      (get-alias* es "_all" "_all"))
+     ([es index-name]
+      (get-alias* es index-name "_all"))
+     ([es index-name alias-name]
+      (call-es es :get (make-url (multi index-name)
+                                 "_alias"
+                                 (multi alias-name)))))
+   good-status))
