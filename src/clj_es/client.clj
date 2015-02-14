@@ -483,3 +483,35 @@
                :params options
                :body test)))
    good-status))
+
+;; Templates
+
+(def put-template
+  (typical-call
+   (fn [es template-name body]
+     (call-es es :put (make-url "_template"
+                                template-name)
+              :body body))
+   good-status))
+
+(def delete-template
+  (typical-call
+   (fn [es template-name]
+     (call-es es :delete (make-url "_template" template-name)))
+   good-status))
+
+(def get-template
+  (typical-call
+   (fn get-template*
+     ([es]
+      (get-template* es nil))
+     ([es template-name]
+      (call-es es :get (make-url "_template"
+                                 (multi template-name)))))
+   good-status))
+
+(def template-exists
+  (typical-call
+   (fn [es template-name]
+     (call-es es :head (make-url "_template" template-name)))
+   good-status))
