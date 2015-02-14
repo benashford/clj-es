@@ -469,3 +469,17 @@
      ([es index-name]
       (call-es es :get (make-url (multi index-name)))))
    good-status))
+
+;; Analyze
+
+(def analyze
+  (typical-call
+   (fn analyze*
+     ([es options test]
+      (analyze* es nil options test))
+     ([es index-name options test]
+      (call-es es :get (make-url index-name
+                                 "_analyze")
+               :params options
+               :body test)))
+   good-status))
