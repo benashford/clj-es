@@ -515,3 +515,46 @@
    (fn [es template-name]
      (call-es es :head (make-url "_template" template-name)))
    good-status))
+
+;; Warmers
+
+(def put-warmer
+  (typical-call
+   (fn put-warmer*
+     ([es warmer-name warmer]
+      (put-warmer* es "_all" nil warmer-name warmer))
+     ([es index-name warmer-name warmer]
+      (put-warmer* es index-name nil warmer-name warmer))
+     ([es index-name type warmer-name warmer]
+      (call-es es :put (make-url (multi index-name)
+                                 (multi type)
+                                 "_warmer"
+                                 warmer-name)
+               :body warmer)))
+   good-status))
+
+(def delete-warmer
+  (typical-call
+   (fn delete-warmer*
+     ([es]
+      (delete-warmer* es "_all" "_all"))
+     ([es index-name]
+      (delete-warmer* es index-name "_all"))
+     ([es index-name warmer-name]
+      (call-es es :delete (make-url (multi index-name)
+                                    "_warmer"
+                                    (multi warmer-name)))))
+   good-status))
+
+(def get-warmer
+  (typical-call
+   (fn get-warmer*
+     ([es]
+      (get-warmer* "_all" nil))
+     ([es index-name]
+      (get-warmer* index-name nil))
+     ([es index-name warmer-name]
+      (call-es es :get (make-url (multi index-name)
+                                 "_warmier"
+                                 (multi warmer-name)))))
+   good-status))
