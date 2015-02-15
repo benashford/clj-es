@@ -555,6 +555,6 @@
       (get-warmer* index-name nil))
      ([es index-name warmer-name]
       (call-es es :get (make-url (multi index-name)
-                                 "_warmier"
+                                 "_warmer"
                                  (multi warmer-name)))))
    good-status))
