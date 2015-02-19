@@ -1,5 +1,7 @@
 (ns clj-es.client
-  (:refer-clojure :exclude [get count])
+  (:refer-clojure :exclude [count
+                            get
+                            flush])
   (:require [clojure.string :as s]
             [cheshire.core :as json]
             [clj-es.core :refer :all]))
@@ -557,4 +559,86 @@
       (call-es es :get (make-url (multi index-name)
                                  "_warmer"
                                  (multi warmer-name)))))
+   good-status))
+
+;; Stats
+
+(def index-stats
+  (typical-call
+   (fn [es & {:keys [index-name stats] :as opts}]
+     (let [opts (dissoc opts :index-name :stats)]
+       (call-es es :get (make-url (multi index-name)
+                                  "_stats"
+                                  (multi stats))
+                :params opts)))
+   good-status))
+
+(def index-segments
+  (typical-call
+   (fn index-segments*
+     ([es]
+      (index-segments* es nil))
+     ([es index-name]
+      (call-es es :get (make-url (multi index-name)
+                                 "_segments"))))
+   good-status))
+
+(def index-recovery
+  (typical-call
+   (fn index-recovery*
+     ([es]
+      (index-recovery* es nil))
+     ([es index-name]
+      (call-es es :get (make-url (multi index-name)
+                                 "_recovery"))))
+   good-status))
+
+(def clear-cache
+  (typical-call
+   (fn clear-cache*
+     ([es]
+      (clear-cache* es nil))
+     ([es index-name]
+      (call-es es :get (make-url (multi index-name)
+                                 "_cache"
+                                 "clear"))))
+   good-status))
+
+;; Flush
+
+(def flush
+  (typical-call
+   (fn flush*
+     ([es]
+      (flush* es nil))
+     ([es index-name]
+      (call-es es :post (make-url (multi index-name)
+                                  "_flush"))))
+   good-status))
+
+(def refresh
+  (typical-call
+   (fn refresh*
+     ([es]
+      (refresh* es nil))
+     ([es index-name]
+      (call-es es :post (make-url (multi index-name)
+                                  "_refresh"))))
+   good-status))
+
+(def optimize
+  (typical-call
+   (fn optimize*
+     ([es]
+      (optimize* es nil))
+     ([es index-name]
+      (call-es es :post (make-url (multi index-name)
+                                  "_optimize"))))
+   good-status))
+
+(def upgrade
+  (typical-call
+   (fn [es index-name]
+     (call-es es :post (make-url (multi index-name)
+                                 "_upgrade")))
    good-status))
