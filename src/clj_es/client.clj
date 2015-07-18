@@ -1,7 +1,8 @@
 (ns clj-es.client
   (:refer-clojure :exclude [count
                             get
-                            flush])
+                            flush
+                            update])
   (:require [clojure.string :as s]
             [cheshire.core :as json]
             [clj-es.core :refer :all]))
