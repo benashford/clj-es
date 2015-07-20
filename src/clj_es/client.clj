@@ -32,8 +32,11 @@
 
 (def delete
   (typical-call
-   (fn [es index-name type id]
-     (call-es es :delete (make-url index-name type id)))
+   (fn delete*
+     ([es]
+      (call-es es :delete (make-url "_all")))
+     ([es index-name type id]
+      (call-es es :delete (make-url index-name type id))))
    good-or-not-found-status))
 
 (def update
