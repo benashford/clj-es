@@ -8,6 +8,8 @@ Will be published to Clojars in due course once required stability has been achi
 
 Tested with ElasticSearch 1.6.
 
+[![Build Status](https://travis-ci.org/benashford/clj-es.svg?branch=master)](https://travis-ci.org/benashford/clj-es)
+
 ## Overview
 
 This project was intended to complement my [asynchronous Redis client](https://github.com/benashford/redis-async), and to contrast my [ElasticSearch client for Rust](https://github.com/benashford/rs-es).
