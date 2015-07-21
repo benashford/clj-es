@@ -1,0 +1,11 @@
+language: clojure
+
+jdk:
+  - oraclejdk8
+
+services:
+  - elasticsearch
+
+# As recommended here: http://docs.travis-ci.com/user/database-setup/#ElasticSearch
+before_script:
+  - sleep 10
