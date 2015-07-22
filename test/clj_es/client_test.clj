@@ -35,6 +35,19 @@
   {:str-field "one"
    :int-field 1})
 
+(defn- make-documents
+  "Make some test data"
+  [index-name doc-type & ids]
+  (core/unwrap!!
+   (client/bulk *client*
+                index-name
+                doc-type
+                (map (fn [id]
+                       [{:index {:_id id}}
+                        {:str-field (str id)
+                         :int-field id}])
+                     ids))))
+
 ;; Utilities
 
 (defn- with-client [f & args]
@@ -60,3 +73,19 @@
                       example-doc)]
       (is (= 201 (-> index-res :status)))
       (is (= true (-> index-res :body :created))))))
+
+(deftest get-test
+  (let [doc (make-documents "get-test" "get-test-doc" 1)]
+    (let [get-res (with-client-unwrp client/get
+                    "get-test"
+                    "get-test-doc"
+                    1)]
+      (is (= 200 (-> get-res :status)))
+      (is (= true (-> get-res :body :found)))
+      (is (= {:str-field "1" :int-field 1} (-> get-res :body :_source))))
+    (let [get-res (with-client-unwrp client/get
+                    "get-test"
+                    "get-test-doc"
+                    2)]
+      (is (= 404 (-> get-res :status)))
+      (is (= false (-> get-res :body :found))))))

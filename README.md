@@ -35,7 +35,11 @@ Other parameters that are sent as query parameters, e.g. routing and version fie
 
 ### `index`
 
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html
 
+### `get`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html
 
 ## Why not use...
 
@@ -45,4 +49,7 @@ TBC: compare with existing clients
 
 1. Testing (including link on Travis)
 2. Documentation
-3. Higher-level extras (e.g. helper functions for scan/scroll)
+3. Release to Clojars
+4. Helper functions for scan/scroll
+5. Helper functions for bulk
+6. Higher-level extras (e.g. helper functions for scan/scroll)
