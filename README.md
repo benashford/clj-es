@@ -41,6 +41,10 @@ See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_
 
 See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html
 
+### `delete`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete.html
+
 ## Why not use...
 
 TBC: compare with existing clients

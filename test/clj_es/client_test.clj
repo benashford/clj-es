@@ -89,3 +89,22 @@
                     2)]
       (is (= 404 (-> get-res :status)))
       (is (= false (-> get-res :body :found))))))
+
+(deftest delete-test
+  (let [doc (make-documents "delete-test" "delete-test-doc" 1 2)]
+    (let [delete-res (with-client-unwrp client/delete
+                       "delete-test"
+                       "delete-test-doc"
+                       1)
+          get-1-res  (with-client-unwrp client/get
+                       "delete-test"
+                       "delete-test-doc"
+                       1)
+          get-2-res  (with-client-unwrp client/get
+                       "delete-test"
+                       "delete-test-doc"
+                       2)]
+      (is (= 200 (-> delete-res :status)))
+      (is (= "1" (-> delete-res :body :_id)))
+      (is (= false (-> get-1-res :body :found)))
+      (is (= true (-> get-2-res :body :found))))))
