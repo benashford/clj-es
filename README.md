@@ -235,6 +235,10 @@ Not yet supported
 
 Not yet supported
 
+## Implementation details
+
+A pool of persistent HTTP connections are used, with a default keepalive value of 30 seconds.
+
 ## Why not use...
 
 TBC: compare with existing clients
