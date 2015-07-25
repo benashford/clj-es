@@ -31,19 +31,119 @@ Other parameters that are sent as query parameters, e.g. routing and version fie
   (index es-client "index-name" "doc-type" id document))
 ```
 
+### Queries
+
+Many ElasticSearch operations take use queries.  These are either in the form of a [URI query parameter](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-uri-request.html) or in the body (along side other arguments) in the form of the [query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html).
+
+Functions that use queries support both of these options.  If a `String` is provided, it will be used as a URI search; otherwise it is assumed to be a request body that will contain a query.
+
+### Multi-index, multi-type
+
+Many ElasticSearch operations can be applied to multiple indexes and multiple types.  For these operations either a `String`, representing a single index/type; or a sequence or vector of `String`s, representing multiple indexes/types, can be provided.
+
 ## APIs supported
 
-### `index`
+### Document APIs
+
+#### `index`
 
 See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html
 
-### `get`
+#### `get`
 
 See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html
 
-### `delete`
+#### `delete`
 
 See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete.html
+
+#### `update`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html
+
+#### `multi-get`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-get.html
+
+#### `bulk`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html
+
+#### `delete-by-query`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html
+
+Please note, this is scheduled to be removed in ElasticSearch 2.0
+
+#### `termvectors`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-termvectors.html
+
+#### `multi-termvectors`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-termvectors.html
+
+### Search APIs
+
+#### `search`
+
+Supports both search by URI: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-uri-request.html, and search by query body: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html.
+
+Because this is a thin layer, anything that can be expressed via a request-body search is supported here - including aggregations and scan/scroll operations.
+
+#### `template-search`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html
+
+Templates can be got and set using `search-template`
+
+#### `search-shards`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-shards.html
+
+#### `suggest`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html
+
+#### `multi-search`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html
+
+#### `count`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-count.html
+
+#### `search-exists`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-exists.html
+
+#### `validate`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-validate.html
+
+#### `explain`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-explain.html
+
+#### `percolate`, `percolate-count`, and `multi-percolate`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-percolate.html
+
+#### `more-like-this`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-more-like-this.html
+
+### Index APIs
+
+TODO
+
+### Cat APIs
+
+Not yet supported
+
+### Cluster APIs
+
+Not yet supported
 
 ## Why not use...
 
@@ -51,9 +151,9 @@ TBC: compare with existing clients
 
 ## TODO
 
-1. Testing (including link on Travis)
-2. Documentation
-3. Release to Clojars
+1. Documentation
+2. Release to Clojars
+3. Implementation of Field stats API (https://www.elastic.co/guide/en/elasticsearch/reference/current/search-more-like-this.html)
 4. Helper functions for scan/scroll
 5. Helper functions for bulk
 6. Higher-level extras (e.g. helper functions for scan/scroll)
