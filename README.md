@@ -135,7 +135,97 @@ See: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-more
 
 ### Index APIs
 
-TODO
+#### `create-index`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html
+
+#### `delete-index`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-delete-index.html
+
+#### `get-index`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-index.html
+
+#### `index-exists`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-exists.html
+
+#### `open-index` and `close-index`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-open-close.html
+
+#### `put-mapping`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-put-mapping.html
+
+#### `get-mapping`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-mapping.html and https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-field-mapping.html
+
+#### `type-exists`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-types-exists.html
+
+#### `delete-mapping`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-delete-mapping.html
+
+#### `aliases`, `add-alias`, `delete-alias` and `get-alias`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-aliases.html
+
+#### `update-settings`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-update-settings.html
+
+#### `get-settings`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-settings.html
+
+#### `analyze`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-analyze.html
+
+#### `put-template`, `delete-template`, `get-template` and `template-exists`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-templates.html
+
+#### `put-warmer`, `delete-warmer` and `get-warmer`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-warmers.html
+
+#### `index-stats`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-stats.html
+
+#### `index-segments`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-segments.html
+
+#### `index-recovery`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-recovery.html
+
+#### `clear-cache`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-clearcache.html
+
+#### `flush`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-flush.html
+
+#### `refresh`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-refresh.html
+
+#### `optimize`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-optimize.html
+
+#### `upgrade`
+
+See: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-upgrade.html
 
 ### Cat APIs
 
@@ -151,9 +241,7 @@ TBC: compare with existing clients
 
 ## TODO
 
-1. Documentation
-2. Release to Clojars
-3. Implementation of Field stats API (https://www.elastic.co/guide/en/elasticsearch/reference/current/search-more-like-this.html)
-4. Helper functions for scan/scroll
-5. Helper functions for bulk
-6. Higher-level extras (e.g. helper functions for scan/scroll)
+1. Release to Clojars
+2. Implementation of Field stats API (https://www.elastic.co/guide/en/elasticsearch/reference/current/search-more-like-this.html)
+3. Helper functions for scan/scroll
+4. Helper functions for bulk
