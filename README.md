@@ -245,10 +245,8 @@ TBC: compare with existing clients
 
 ## TODO
 
-1. Release to Clojars
-2. Implementation of Field stats API (https://www.elastic.co/guide/en/elasticsearch/reference/current/search-more-like-this.html)
-3. Helper functions for scan/scroll
-4. Helper functions for bulk
+1. Implementation of Field stats API (https://www.elastic.co/guide/en/elasticsearch/reference/current/search-more-like-this.html)
+2. Helper functions for scan/scroll
 
 ## License
 
