@@ -1,4 +1,4 @@
-(defproject clj-es "0.1.0"
+(defproject clj-es "0.1.1-SNAPSHOT"
   :description "Lightweight async client for the ElasticSearch REST API"
   :url "https://github.com/benashford/clj-es"
   :license {:name         "Apache Licence 2.0"

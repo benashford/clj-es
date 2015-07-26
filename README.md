@@ -4,7 +4,7 @@ An asynchronous ElasticSearch client for Clojure.
 
 Currently under development.  Warning: more APIs have been implemented than tested at this stage.
 
-Will be published to Clojars in due course once required stability has been achieved.
+[![Clojars Project](http://clojars.org/clj-es/latest-version.svg)](http://clojars.org/clj-es)
 
 Tested with ElasticSearch 1.6.
 
